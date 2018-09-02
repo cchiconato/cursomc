@@ -27,7 +27,7 @@ import com.nelioalves.cursomc.repositories.EnderecoRepository;
 import com.nelioalves.cursomc.repositories.EstadoRepository;
 import com.nelioalves.cursomc.repositories.ItemPedidoRepository;
 import com.nelioalves.cursomc.repositories.PagamentoRepository;
-import com.nelioalves.cursomc.repositories.PedidoRespository;
+import com.nelioalves.cursomc.repositories.PedidoRepository;
 import com.nelioalves.cursomc.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -48,7 +48,7 @@ public class CursomcApplication implements CommandLineRunner {
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
 	@Autowired
-	private PedidoRespository pedidoRepository;
+	private PedidoRepository pedidoRepository;
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
 	

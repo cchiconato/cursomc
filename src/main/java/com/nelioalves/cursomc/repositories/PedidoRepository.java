@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.nelioalves.cursomc.domain.Pedido;
 
 @Repository
-public interface PedidoRespository extends JpaRepository<Pedido, Integer> {
+public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
 
 }
