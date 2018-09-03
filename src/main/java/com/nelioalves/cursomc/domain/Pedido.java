@@ -51,7 +51,9 @@ public class Pedido implements Serializable {
 	}
 	
 	public double getValorTotal() {
-		return itens.stream().mapToDouble(x -> x.getSubTotal()).sum();
+		return itens.stream()
+				.mapToDouble(x -> x.getSubTotal())
+				.sum();
 	}
 
 	public Integer getId() {
