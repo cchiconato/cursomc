@@ -29,7 +29,7 @@ public class ClienteService {
 	}
 	
 	public Cliente update(Cliente obj) {
-		Cliente newObj = buscar(obj.getId());
+		Cliente newObj = repo.getOne(obj.getId());
 		updateData(newObj, obj);
 		return repo.save(newObj);
 	}
