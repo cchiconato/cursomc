@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,11 +44,17 @@ public class Cliente implements Serializable {
 	@CollectionTable(name="TELEFONE")
 	private Set<String> telefones = new HashSet<>();
 	
+	@ElementCollection(fetch=FetchType.EAGER)
+	@CollectionTable(name="PERFIS")
+	private Set<Integer> perfis = new HashSet<>();
+	
 	@JsonIgnore
 	@OneToMany(mappedBy="cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
 	
-	public Cliente() {}
+	public Cliente() {
+		addPerfil(Perfil.CLIENTE);
+	}
 
 	public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo, String senha) {
 		this.id = id;
@@ -55,6 +63,7 @@ public class Cliente implements Serializable {
 		this.cpfOuCnpj = cpfOuCnpj;
 		this.tipo = tipo == null ? null : tipo.getCod();
 		this.senha =senha;
+		addPerfil(Perfil.CLIENTE);
 	}
 
 	public Integer getId() {
@@ -120,6 +129,14 @@ public class Cliente implements Serializable {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
+	
+	public Set<Perfil> getPerfis() {
+		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+	}
+	
+	public void addPerfil(Perfil perfil) {
+		perfis.add(perfil.getCod());
+	}
 
 	@Override
 	public int hashCode() {
@@ -128,7 +145,6 @@ public class Cliente implements Serializable {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
-	
 
 	public List<Pedido> getPedidos() {
 		return pedidos;
@@ -155,4 +171,40 @@ public class Cliente implements Serializable {
 		return true;
 	}
 	
+	public static enum Perfil {
+		
+		ADMIN(1, "ROLE_ADMIN"),
+		CLIENTE(2, "ROLE_CLIENTE");
+		
+		private int cod;
+		private String descricao;
+		
+		private Perfil(int cod, String descricao) {
+			this.cod = cod;
+			this.descricao = descricao;
+		}
+		
+		public int getCod() {
+			return cod;
+		}
+		
+		public String getDescricao() {
+			return descricao;
+		}
+		
+		public static Perfil toEnum(Integer cod) {
+			if(cod == null) {
+				return null;
+			}
+			
+			for(Perfil x : Perfil.values()) {
+				if(cod.equals(x.getCod())) {
+					return x;
+				}
+			}
+			
+			throw new IllegalArgumentException("Id inválido: " + cod);
+		}
+	}
 }
+

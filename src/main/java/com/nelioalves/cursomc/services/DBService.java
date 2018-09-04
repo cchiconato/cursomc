@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.nelioalves.cursomc.domain.Categoria;
 import com.nelioalves.cursomc.domain.Cidade;
 import com.nelioalves.cursomc.domain.Cliente;
+import com.nelioalves.cursomc.domain.Cliente.Perfil;
 import com.nelioalves.cursomc.domain.Endereco;
 import com.nelioalves.cursomc.domain.Estado;
 import com.nelioalves.cursomc.domain.ItemPedido;
@@ -119,11 +120,16 @@ public class DBService {
 		Cliente cli1 = new Cliente(null, "Maria Silva", "cchiconato@gmail.com", "397987987", TipoCliente.PESSOAFISICA, pe.encode("123"));
 		cli1.getTelefones().addAll(Arrays.asList("3231333", "3231345"));
 		
+		Cliente cli2 = new Cliente(null, "Ana Costa", "augvena@gmail.com", "06777041940", TipoCliente.PESSOAFISICA, pe.encode("123"));
+		cli2.getTelefones().addAll(Arrays.asList("12313", "1232"));
+		cli2.addPerfil(Perfil.ADMIN);
+		
 		Endereco end1 = new Endereco(null, "Rua Flores", "323", "Casa", "Pq aves", "2646436", cli1, c1);
 		Endereco end2 = new Endereco(null, "Rua matos", "532", "Sala", "Pq magos", "2433443", cli1, c2);
+		Endereco end3 = new Endereco(null, "Rua Floriano", "2106", "Sala", "Pq poucos", "23232", cli2, c2);
 		
-		clienteRepository.saveAll(Arrays.asList(cli1));
-		enderecoRepository.saveAll(Arrays.asList(end1, end2));
+		clienteRepository.saveAll(Arrays.asList(cli1, cli2));
+		enderecoRepository.saveAll(Arrays.asList(end1, end2, end3));
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		
